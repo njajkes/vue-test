@@ -1,9 +1,9 @@
 <template>
-  <select class="select">
+  <select class="select" @change="changeSender">
     <option
       v-for="opt in optionlist"
       :key="opt.value"
-      value="opt.value"
+      :value="opt.value"
     >
       {{ opt.name }}
     </option>
@@ -16,18 +16,23 @@ export default {
     return {
       optionlist: [
         {
-          value: 'name',
+          value: '0',
           name: 'По наименованию'
         },
         {
-          value: 'toMax',
+          value: '1',
           name: 'Сначала дешёвые'
         },
         {
-          value: 'toMin',
+          value: '2',
           name: 'Сначала дорогие'
         }
       ]
+    }
+  },
+  methods: {
+    changeSender (e) {
+      this.$emit('switcherchange', e.target.value)
     }
   }
 }

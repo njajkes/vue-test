@@ -76,7 +76,18 @@ export default {
   },
   methods: {
     addNewCard (event) {
-
+      this.fields.id = Date.now()
+      this.$children.forEach((child) => {
+        child.value = ''
+      })
+      this.$emit('create', this.fields)
+      this.fields = {
+        title: '',
+        description: '',
+        imglink: '',
+        cost: 0
+      }
+      this.allCorrect = false
     },
     formChange (name, value) {
       this.fields[name] = value
@@ -98,10 +109,13 @@ export default {
 
 <style lang="scss" scoped>
 .new {
-  width:332px;
+  flex-basis: 25%;
+  min-width: 332px;
   background: #FFFEFB;
   box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
   border-radius: 4px;
   padding: 24px;
+  height: 440px;
+  flex-shrink: 0;
 }
 </style>
