@@ -4,11 +4,19 @@
       <p class="app__header__text">
         Добавление товара
       </p>
-      <cards-switcher />
+      <cards-switcher
+        :option="sortOption"
+        @switcherchange="orderChange"
+      />
     </div>
     <div class="app__content">
-      <new-form @create="pushNewCard" />
-      <card-list :cards="cards" />
+      <new-form
+        @create="pushNewCard"
+      />
+      <card-list
+        :cards="cards"
+        @deletecard="filterCards"
+      />
     </div>
   </div>
 </template>
@@ -18,10 +26,17 @@ import CardList from './CardList.vue'
 import CardsSwitcher from './CardsSwitcher.vue'
 import NewForm from './NewForm.vue'
 
+export const sortOptions = {
+  NAME: 0,
+  TO_MAX: 1,
+  TO_MIN: 2
+}
+
 export default {
   components: { CardsSwitcher, CardList, NewForm },
   data () {
     return {
+      sortOption: sortOptions.NAME,
       cards: []
     }
   },
@@ -36,6 +51,27 @@ export default {
   methods: {
     pushNewCard (card) {
       this.cards.push(card)
+    },
+    filterCards (cardId) {
+      this.cards = this.cards.filter(card => card.id !== cardId)
+    },
+    orderChange (sortValue) {
+      const condition = +sortValue
+      const compareName = (a, b) => a.title?.toLowerCase()?.localeCompare(b.title.toLowerCase())
+      const toMax = (a, b) => a.cost.split(' ').join('') - b.cost.split(' ').join('')
+      const toMin = (a, b) => b.cost.split(' ').join('') - a.cost.split(' ').join('')
+
+      switch (condition) {
+        case sortOptions.NAME:
+          this.cards = [...this.cards].sort(compareName)
+          break
+        case sortOptions.TO_MIN:
+          this.cards = [...this.cards].sort(toMin)
+          break
+        case sortOptions.TO_MAX:
+          this.cards = [...this.cards].sort(toMax)
+          break
+      }
     }
   }
 }

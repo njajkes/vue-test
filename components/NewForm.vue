@@ -77,6 +77,9 @@ export default {
   methods: {
     addNewCard (event) {
       this.fields.id = Date.now()
+      this.$children.forEach((child) => {
+        child.value = ''
+      })
       this.$emit('create', this.fields)
       this.fields = {
         title: '',
@@ -84,6 +87,7 @@ export default {
         imglink: '',
         cost: 0
       }
+      this.allCorrect = false
     },
     formChange (name, value) {
       this.fields[name] = value
@@ -112,5 +116,6 @@ export default {
   border-radius: 4px;
   padding: 24px;
   height: 440px;
+  flex-shrink: 0;
 }
 </style>

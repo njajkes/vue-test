@@ -1,11 +1,12 @@
 <template>
-  <div class="cards">
+  <transition-group name="cards" tag="div" class="cards">
     <product-card
       v-for="card in cards"
       :key="card.id"
       :card="card"
+      @deletecard="deleteCard"
     />
-  </div>
+  </transition-group>
 </template>
 
 <script>
@@ -16,6 +17,11 @@ export default {
     cards: {
       type: Array,
       required: true
+    }
+  },
+  methods: {
+    deleteCard (cardId) {
+      this.$emit('deletecard', cardId)
     }
   }
 }
@@ -28,5 +34,8 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+.cards-move {
+  transition: transform 1s;
 }
 </style>

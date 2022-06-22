@@ -11,6 +11,7 @@
       v-if="type === 'textarea'"
       :class="`new-input__area${!isCorrect ? ' new-input__req-error' : ''}`"
       :placeholder="placeholder"
+      :value="value"
       @input="onChange"
     />
     <input
